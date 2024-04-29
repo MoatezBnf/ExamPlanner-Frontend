@@ -83,6 +83,13 @@ function generateFakeData(count: number): Exam[] {
 
   return exams;
 }
+function formatDate(date: Date): string {
+  const day = ("0" + date.getDate()).slice(-2);
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day}`;
+}
 // const fakeData = generateFakeData(50);
 // console.log(fakeData);
 // const uniqueLevels = Array.from(
@@ -289,7 +296,6 @@ function Exams() {
               className="w-full px-3 py-2 border rounded-md"
             />
           </div>
-          {/* Add more fields as needed */}
         </ModalBody>
         <ModalFooter>
           <Button onClick={closeAddExamModal}>Cancel</Button>
@@ -318,10 +324,11 @@ function Exams() {
             <label className="block text-sm text-gray-600">Exam Date</label>
             <Input
               type="date"
-              value={editExam ? editExam.Date.toISOString().split("T")[0] : ""}
+              value={editExam ? formatDate(editExam.Date) : ""}
               onChange={(e) => {
                 if (editExam) {
-                  setEditExam({ ...editExam, Date: new Date(e.target.value) });
+                  const newDate = new Date(e.target.value);
+                  setEditExam({ ...editExam, Date: newDate });
                 }
               }}
               className="w-full px-3 py-2 border rounded-md"
@@ -352,13 +359,7 @@ function Exams() {
         </ModalBody>
         <ModalFooter>
           <Button onClick={closeEditExamModal}>Cancel</Button>
-          <Button
-            onClick={() => {
-              // Add your update logic here
-            }}
-          >
-            Update
-          </Button>
+          <Button>Update</Button>
         </ModalFooter>
       </Modal>
 

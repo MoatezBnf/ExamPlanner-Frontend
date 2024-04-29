@@ -26,8 +26,10 @@ import DropdownIcon from './dropdown.svg'
 import OutlinePersonIcon from './outlinePerson.svg'
 import OutlineCogIcon from './outlineCog.svg'
 import OutlineLogoutIcon from './outlineLogout.svg'
+import ViewIcon from './view.svg'
 
 export {
+  ViewIcon,
   ButtonsIcon,
   CardsIcon,
   ChartsIcon,
