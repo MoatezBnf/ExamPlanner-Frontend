@@ -20,6 +20,7 @@ import {
 import { EditIcon, TrashIcon, ViewIcon } from "icons";
 import Layout from "example/containers/Layout";
 import PageTitle from "example/components/Typography/PageTitle";
+import Link from "next/link";
 
 interface Exam {
   name: string;
@@ -471,9 +472,13 @@ function Schedule() {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-4">
-                    <Button layout="link" size="small" aria-label="View">
-                      <ViewIcon className="w-5 h-5" aria-hidden="true" />
-                    </Button>
+                    <Link href="/schedule-graph">
+                      <a>
+                        <Button layout="link" size="small" aria-label="View">
+                          <ViewIcon className="w-5 h-5" aria-hidden="true" />
+                        </Button>
+                      </a>
+                    </Link>
                     <Button
                       layout="link"
                       size="small"

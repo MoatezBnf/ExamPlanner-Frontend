@@ -27,67 +27,34 @@ export function routeIsActive(pathname: String, route: IRoute): boolean {
 
 const routes: IRoute[] = [
   {
-    path: "/example", // the url
+    path: "/", // the url
     icon: "HomeIcon", // the component being exported from icons/index.js
     name: "Dashboard", // name that appear in Sidebar
     exact: true,
   },
   {
-    path: "/example/forms",
-    icon: "FormsIcon",
-    name: "Forms",
+    path: "/user",
+    icon: "OutlinePersonIcon",
+    name: "Users",
+    exact: true,
   },
   {
-    path: "/example/cards",
-    icon: "CardsIcon",
-    name: "Cards",
+    path: "/student",
+    icon: "StudentIcon",
+    name: "Students",
+    exact: true,
   },
   {
-    path: "/example/charts",
-    icon: "ChartsIcon",
-    name: "Charts",
+    path: "/exam",
+    icon: "ExamIcon",
+    name: "Exams",
+    exact: true,
   },
   {
-    path: "/example/buttons",
-    icon: "ButtonsIcon",
-    name: "Buttons",
-  },
-  {
-    path: "/example/modals",
-    icon: "ModalsIcon",
-    name: "Modals",
-  },
-  {
-    path: "/example/tables",
-    icon: "TablesIcon",
-    name: "Tables",
-  },
-  {
-    icon: "PagesIcon",
-    name: "Pages",
-    routes: [
-      // submenu
-      {
-        path: "/example/login",
-        name: "Login",
-      },
-      {
-        path: "/example/create-account",
-        name: "Create account",
-      },
-      {
-        path: "/example/forgot-password",
-        name: "Forgot password",
-      },
-      {
-        path: "/example/404",
-        name: "404",
-      },
-      {
-        path: "/example/blank",
-        name: "Blank",
-      },
-    ],
+    path: "/schedule",
+    icon: "ScheduleIcon",
+    name: "Schedules",
+    exact: true,
   },
 ];
 
