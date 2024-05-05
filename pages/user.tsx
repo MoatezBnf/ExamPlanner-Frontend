@@ -39,15 +39,71 @@ const users: UserModel[] = [
     Id: "1",
     UserName: "John Doe",
     Email: "john.doe@example.com",
-    Role: "Admin",
+    Role: "Director",
     DepartmentIds: [1, 2],
   },
   {
     Id: "2",
     UserName: "Jane Smith",
     Email: "jane.smith@example.com",
-    Role: "User",
+    Role: "StudentAffairsService",
     DepartmentIds: [2],
+  },
+  {
+    Id: "3",
+    UserName: "Alice Johnson",
+    Email: "alice.johnson@example.com",
+    Role: "Director",
+    DepartmentIds: [1, 3],
+  },
+  {
+    Id: "4",
+    UserName: "Bob Smith",
+    Email: "bob.smith@example.com",
+    Role: "StudentAffairsService",
+    DepartmentIds: [2],
+  },
+  {
+    Id: "5",
+    UserName: "Charlie Brown",
+    Email: "charlie.brown@example.com",
+    Role: "Director",
+    DepartmentIds: [1, 2, 3],
+  },
+  {
+    Id: "6",
+    UserName: "David Lee",
+    Email: "david.lee@example.com",
+    Role: "StudentAffairsService",
+    DepartmentIds: [3],
+  },
+  {
+    Id: "7",
+    UserName: "Eva Martinez",
+    Email: "eva.martinez@example.com",
+    Role: "Director",
+    DepartmentIds: [2, 3],
+  },
+  {
+    Id: "8",
+    UserName: "Frank Johnson",
+    Email: "frank.johnson@example.com",
+    Role: "StudentAffairsService",
+    DepartmentIds: [1],
+  },
+  {
+    Id: "9",
+    UserName: "Grace Wilson",
+    Email: "grace.wilson@example.com",
+    Role: "Director",
+    DepartmentIds: [1, 2],
+  },
+  {
+    Id: "10",
+    UserName: "Henry Davis",
+    Email: "henry.davis@example.com",
+    Role: "StudentAffairsService",
+    DepartmentIds: [2, 3],
   },
   // Add more users as needed
 ];
@@ -55,11 +111,15 @@ const users: UserModel[] = [
 const departments: Department[] = [
   {
     DepartmentId: 1,
-    Name: "Engineering",
+    Name: "Digital",
   },
   {
     DepartmentId: 2,
-    Name: "Marketing",
+    Name: "Business",
+  },
+  {
+    DepartmentId: 3,
+    Name: "Polytechnic",
   },
   // Add more departments as needed
 ];

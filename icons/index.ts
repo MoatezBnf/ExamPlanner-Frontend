@@ -30,8 +30,20 @@ import ViewIcon from "./view.svg";
 import ScheduleIcon from "./schedule.svg";
 import StudentIcon from "./student.svg";
 import ExamIcon from "./exam.svg";
+import DepartmentIcon from "./department.svg";
+import SpecialityIcon from "./speciality.svg";
+import LevelIcon from "./level.svg";
+import ClassIcon from "./class.svg";
+import GroupIcon from "./group.svg";
+import RoomIcon from "./room.svg";
 
 export {
+  RoomIcon,
+  GroupIcon,
+  ClassIcon,
+  LevelIcon,
+  SpecialityIcon,
+  DepartmentIcon,
   ExamIcon,
   StudentIcon,
   ScheduleIcon,

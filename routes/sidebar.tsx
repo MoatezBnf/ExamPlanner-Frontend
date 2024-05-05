@@ -39,6 +39,42 @@ const routes: IRoute[] = [
     exact: true,
   },
   {
+    path: "#", // the url
+    icon: "DepartmentIcon", // the component being exported from icons/index.js
+    name: "Departments", // name that appear in Sidebar
+    exact: true,
+  },
+  {
+    path: "#", // the url
+    icon: "SpecialityIcon", // the component being exported from icons/index.js
+    name: "Specialities", // name that appear in Sidebar
+    exact: true,
+  },
+  {
+    path: "#", // the url
+    icon: "LevelIcon", // the component being exported from icons/index.js
+    name: "Levels", // name that appear in Sidebar
+    exact: true,
+  },
+  {
+    path: "#", // the url
+    icon: "ClassIcon", // the component being exported from icons/index.js
+    name: "Classes", // name that appear in Sidebar
+    exact: true,
+  },
+  {
+    path: "#", // the url
+    icon: "GroupIcon", // the component being exported from icons/index.js
+    name: "Groups", // name that appear in Sidebar
+    exact: true,
+  },
+  {
+    path: "#", // the url
+    icon: "RoomIcon", // the component being exported from icons/index.js
+    name: "Rooms", // name that appear in Sidebar
+    exact: true,
+  },
+  {
     path: "/student",
     icon: "StudentIcon",
     name: "Students",
