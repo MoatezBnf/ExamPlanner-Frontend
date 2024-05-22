@@ -2,6 +2,97 @@ export interface ILegends{
   title: string
   color: string
 }
+export interface IDepartment {
+  name: string;
+  color: string;
+}
+
+export const departmentData: IDepartment[] = [
+  { name: "Digital", color: "bg-blue-500" },
+  { name: "Business", color: "bg-teal-600" },
+  { name: "Polytechnic", color: "bg-purple-600" },
+];
+
+export const examsData = {
+  data: {
+    datasets: [
+      {
+        data: [32, 23, 17], // Number of exams passed in each department
+        backgroundColor: ["#0694a2", "#1c64f2", "#7e3af2"],
+        label: "Classes",
+      },
+    ],
+    labels: ["Digital", "Business", "Polytechnic"],
+  },
+  options: {
+    responsive: true,
+    cutoutPercentage: 80,
+  },
+  legend: {
+    display: false,
+  },
+};
+
+export const usersData = {
+  data: {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+      {
+        label: "Users",
+        backgroundColor: "#0694a2",
+        borderColor: "#0694a2",
+        data: [5, 10, 15, 12, 12, 10, 20], // Number of users over time
+        fill: false,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    tooltips: {
+      mode: "index",
+      intersect: false,
+    },
+    scales: {
+      x: {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: "Month",
+        },
+      },
+      y: {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: "Users",
+        },
+      },
+    },
+  },
+  legend: {
+    display: false,
+  },
+};
+
+export const studentsData = {
+  data: {
+    labels: ["Digital", "Business", "Polytechnic"],
+    datasets: [
+      {
+        label: "Students",
+        backgroundColor: ["#0694a2", "#1c64f2", "#7e3af2"],
+        borderWidth: 1,
+        data: [1200, 800, 500], // Number of students in each department
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+  },
+  legend: {
+    display: false,
+  },
+};
 
 
 export const doughnutLegends: ILegends[] = [

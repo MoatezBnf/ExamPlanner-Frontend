@@ -604,18 +604,19 @@ function EditStudentForm({ student }: EditStudentFormProps) {
   const [name, setName] = useState(student ? student.Name : "");
   const [email, setEmail] = useState(student ? student.Email : "");
   const [groupId, setGroupId] = useState(student ? student.Group.GroupId : "");
+  const [classId, setClassId] = useState(student ? student.Class.ClassId : "");
+  const [speciality, setSpeciality] = useState(
+    student ? student.Class.SpecialityLevel.Speciality.Name : ""
+  );
+  const [year, setYear] = useState(
+    student ? student.Class.SpecialityLevel.Level.Name : ""
+  );
+  const [department, setDepartment] = useState(
+    student ? student.Class.SpecialityLevel.Speciality.Department.Name : ""
+  );
 
   return (
     <>
-      <Label>
-        <span>Student ID</span>
-        <Input
-          className="mt-1"
-          placeholder="Enter Student ID"
-          value={studentId}
-          onChange={(e) => setStudentId(e.target.value)}
-        />
-      </Label>
       <Label className="mt-4">
         <span>Name</span>
         <Input
@@ -635,15 +636,44 @@ function EditStudentForm({ student }: EditStudentFormProps) {
         />
       </Label>
       <Label className="mt-4">
-        <span>Group ID</span>
+        <span>Class</span>
+        <Select
+          className="mt-1"
+          value={classId}
+          onChange={(e) => setClassId(e.target.value)}
+        >
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </Select>
+      </Label>
+      <Label className="mt-4">
+        <span>Speciality</span>
         <Input
           className="mt-1"
-          placeholder="Enter Group ID"
-          value={groupId}
-          onChange={(e) => setGroupId(e.target.value)}
+          placeholder="Enter Speciality"
+          value={speciality}
+          onChange={(e) => setSpeciality(e.target.value)}
         />
       </Label>
-      {/* TODO: Add other fields */}
+      <Label className="mt-4">
+        <span>Year</span>
+        <Input
+          className="mt-1"
+          placeholder="Enter Year"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+        />
+      </Label>
+      <Label className="mt-4">
+        <span>Department</span>
+        <Input
+          className="mt-1"
+          placeholder="Enter Department"
+          value={department}
+          onChange={(e) => setDepartment(e.target.value)}
+        />
+      </Label>
     </>
   );
 }

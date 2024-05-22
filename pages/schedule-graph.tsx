@@ -354,6 +354,7 @@ function ScheduleGraph() {
         pdf.setFont("helvetica", "normal");
         pdf.setFontSize(10);
         const classDetails = ` Speciality: ${currentSchedule.class.speciality}, Level: ${currentSchedule.class.level},Class: ${currentSchedule.class.className}, Group: ${currentSchedule.class.groupName}`;
+        pdf.setFont("helvetica", "bold");
         pdf.text(classDetails, 10, 20);
         const margin = 10; // Set the margin
         const lineHeight = 1.15 * 10; // Line height is 1.15 times the font size
@@ -381,7 +382,11 @@ function ScheduleGraph() {
   return (
     <Layout>
       <PageTitle>{`${currentSchedule.name} - Semester ${currentSchedule.semester} - ${currentSchedule.scholarYear}`}</PageTitle>
-      <div className="mb-2">
+      <p>
+        <strong>{`Speciality: ${currentSchedule.class.speciality}, 
+      Level: ${currentSchedule.class.level}, Class: ${currentSchedule.class.className}, Group: ${currentSchedule.class.groupName}`}</strong>
+      </p>
+      <div className="mb-2 mt-2">
         <Button onClick={printTimetable}>Print Timetable</Button>
       </div>
       <TableContainer id="timetable" className="mb-8">

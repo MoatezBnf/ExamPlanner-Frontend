@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Doughnut, Line } from "react-chartjs-2";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 
 import InfoCard from "example/components/Cards/InfoCard";
 import ChartCard from "example/components/Chart/ChartCard";
@@ -9,6 +9,12 @@ import RoundIcon from "example/components/RoundIcon";
 import Layout from "example/containers/Layout";
 import response, { ITableData } from "utils/demo/tableData";
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from "icons";
+import {
+  departmentData,
+  examsData,
+  studentsData,
+  usersData,
+} from "utils/demo/chartsData";
 
 import {
   TableBody,
@@ -40,6 +46,8 @@ import {
   Title,
   Tooltip,
   Legend,
+  BarController,
+  BarElement,
 } from "chart.js";
 
 function Dashboard() {
@@ -51,7 +59,9 @@ function Dashboard() {
     LineElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    BarController,
+    BarElement
   );
 
   const [page, setPage] = useState(1);
@@ -123,7 +133,7 @@ function Dashboard() {
         <Table>
           <TableHeader>
             <tr>
-              <TableCell>Client</TableCell>
+              <TableCell>Department</TableCell>
               <TableCell>Amount</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Date</TableCell>
@@ -173,16 +183,20 @@ function Dashboard() {
       </TableContainer>
 
       <PageTitle>Charts</PageTitle>
-      <div className="grid gap-6 mb-8 md:grid-cols-2">
-        <ChartCard title="Revenue">
-          <Doughnut {...doughnutOptions} />
-          <ChartLegend legends={doughnutLegends} />
+      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-2">
+        <ChartCard title="Classes">
+          <Doughnut data={examsData.data} options={examsData.options} />
         </ChartCard>
 
-        <ChartCard title="Traffic">
-          <Line {...lineOptions} />
-          <ChartLegend legends={lineLegends} />
-        </ChartCard>
+        <div className="grid gap-6 mb-8 md:grid-cols-1 xl:grid-cols-1">
+          <ChartCard title="Students">
+            <Bar data={studentsData.data} options={studentsData.options} />
+          </ChartCard>
+
+          <ChartCard title="Users">
+            <Line data={usersData.data} options={usersData.options} />
+          </ChartCard>
+        </div>
       </div>
     </Layout>
   );
