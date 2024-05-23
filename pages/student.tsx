@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PageTitle from "example/components/Typography/PageTitle";
+import PageTitle from "pages/components/Typography/PageTitle";
 import {
   Table,
   TableHeader,
@@ -19,7 +19,7 @@ import {
   ModalHeader,
 } from "@roketid/windmill-react-ui";
 import { EditIcon, TrashIcon } from "icons";
-import Layout from "example/containers/Layout";
+import Layout from "pages/containers/Layout";
 
 interface IDepartment {
   DepartmentId: number;

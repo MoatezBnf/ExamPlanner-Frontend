@@ -1,205 +1,124 @@
-import React, { useState, useEffect } from "react";
-import { Bar, Doughnut, Line } from "react-chartjs-2";
-
-import InfoCard from "example/components/Cards/InfoCard";
-import ChartCard from "example/components/Chart/ChartCard";
-import ChartLegend from "example/components/Chart/ChartLegend";
-import PageTitle from "example/components/Typography/PageTitle";
-import RoundIcon from "example/components/RoundIcon";
-import Layout from "example/containers/Layout";
-import response, { ITableData } from "utils/demo/tableData";
-import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from "icons";
-import {
-  departmentData,
-  examsData,
-  studentsData,
-  usersData,
-} from "utils/demo/chartsData";
+import React, { useContext, useEffect, useState } from "react";
+import Image from "next/image";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 import {
-  TableBody,
-  TableContainer,
-  Table,
-  TableHeader,
-  TableCell,
-  TableRow,
-  TableFooter,
-  Avatar,
-  Badge,
-  Pagination,
+  Label,
+  Input,
+  Button,
+  WindmillContext,
 } from "@roketid/windmill-react-ui";
+import router from "next/router";
 
-import {
-  doughnutOptions,
-  lineOptions,
-  doughnutLegends,
-  lineLegends,
-} from "utils/demo/chartsData";
+function LoginPage() {
+  const { mode } = useContext(WindmillContext);
+  const imgSource =
+    mode === "dark"
+      ? "/assets/img/login-office-dark.jpeg"
+      : "/assets/img/login-office.jpeg";
+  const [errorMessage, setErrorMessage] = useState("");
 
-import {
-  Chart,
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  BarController,
-  BarElement,
-} from "chart.js";
-
-function Dashboard() {
-  Chart.register(
-    ArcElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-    BarController,
-    BarElement
-  );
-
-  const [page, setPage] = useState(1);
-  const [data, setData] = useState<ITableData[]>([]);
-
-  // pagination setup
-  const resultsPerPage = 10;
-  const totalResults = response.length;
-
-  // pagination change control
-  function onPageChange(p: number) {
-    setPage(p);
-  }
-
-  // on page change, load new sliced data
-  // here you would make another server request for new data
   useEffect(() => {
-    setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage));
-  }, [page]);
+    if (Cookies.get("token")) {
+      router.push("/dashboard");
+    }
+  }, []);
 
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const username = (event.target as any).username.value;
+    const password = (event.target as any).password.value;
+
+    try {
+      const response = await axios.post(
+        "https://localhost:7099/api/account/login",
+        {
+          UserName: username,
+          Password: password,
+        }
+      );
+
+      if (response.status === 200) {
+        const token = response.data.token;
+        // Store the token in localStorage
+        Cookies.set("token", token);
+        // Set the default axios authorization header
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        // Handle successful login
+        router.push("/dashboard");
+      } else if(response.status === 401) {
+        setErrorMessage(
+          "Login failed. Please check your username and password."
+        );
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again later.");
+    }
+  }
   return (
-    <Layout>
-      <PageTitle>Dashboard</PageTitle>
-
-      {/* <!-- Cards --> */}
-      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-        <InfoCard title="Total clients" value="6389">
-          {/* @ts-ignore */}
-          <RoundIcon
-            icon={PeopleIcon}
-            iconColorClass="text-orange-500 dark:text-orange-100"
-            bgColorClass="bg-orange-100 dark:bg-orange-500"
-            className="mr-4"
-          />
-        </InfoCard>
-
-        <InfoCard title="Account balance" value="$ 46,760.89">
-          {/* @ts-ignore */}
-          <RoundIcon
-            icon={MoneyIcon}
-            iconColorClass="text-green-500 dark:text-green-100"
-            bgColorClass="bg-green-100 dark:bg-green-500"
-            className="mr-4"
-          />
-        </InfoCard>
-
-        <InfoCard title="New sales" value="376">
-          {/* @ts-ignore */}
-          <RoundIcon
-            icon={CartIcon}
-            iconColorClass="text-blue-500 dark:text-blue-100"
-            bgColorClass="bg-blue-100 dark:bg-blue-500"
-            className="mr-4"
-          />
-        </InfoCard>
-
-        <InfoCard title="Pending contacts" value="35">
-          {/* @ts-ignore */}
-          <RoundIcon
-            icon={ChatIcon}
-            iconColorClass="text-teal-500 dark:text-teal-100"
-            bgColorClass="bg-teal-100 dark:bg-teal-500"
-            className="mr-4"
-          />
-        </InfoCard>
-      </div>
-
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <tr>
-              <TableCell>Department</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Date</TableCell>
-            </tr>
-          </TableHeader>
-          <TableBody>
-            {data.map((user, i) => (
-              <TableRow key={i}>
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar
-                      className="hidden mr-3 md:block"
-                      src={user.avatar}
-                      alt="User image"
-                    />
-                    <div>
-                      <p className="font-semibold">{user.name}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {user.job}
-                      </p>
-                    </div>
+    <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+        <div className="flex flex-col overflow-y-auto md:flex-row">
+          <div className="relative h-32 md:h-auto md:w-1/2">
+            <Image
+              aria-hidden="true"
+              className="hidden object-cover w-full h-full"
+              src={imgSource}
+              alt="Office"
+              layout="fill"
+            />
+          </div>
+          <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div className="w-full">
+              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
+                Login
+              </h1>
+              <form onSubmit={handleSubmit}>
+                {errorMessage && (
+                  <div className="mb-2 text-l text-gray-700 dark:text-gray-200">
+                    {errorMessage}
                   </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">$ {user.amount}</span>
-                </TableCell>
-                <TableCell>
-                  <Badge type={user.status}>{user.status}</Badge>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">
-                    {new Date(user.date).toLocaleDateString()}
-                  </span>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TableFooter>
-          <Pagination
-            totalResults={totalResults}
-            resultsPerPage={resultsPerPage}
-            label="Table navigation"
-            onChange={onPageChange}
-          />
-        </TableFooter>
-      </TableContainer>
+                )}
+                <Label>
+                  <span>Username</span>
+                  <Input
+                    className="mt-1"
+                    type="text"
+                    name="username"
+                    placeholder="JohnDoe123"
+                  />
+                </Label>
 
-      <PageTitle>Charts</PageTitle>
-      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-2">
-        <ChartCard title="Classes">
-          <Doughnut data={examsData.data} options={examsData.options} />
-        </ChartCard>
+                <Label className="mt-4">
+                  <span>Password</span>
+                  <Input
+                    className="mt-1"
+                    type="password"
+                    name="password"
+                    placeholder="***************"
+                  />
+                </Label>
 
-        <div className="grid gap-6 mb-8 md:grid-cols-1 xl:grid-cols-1">
-          <ChartCard title="Students">
-            <Bar data={studentsData.data} options={studentsData.options} />
-          </ChartCard>
+                <Button className="mt-4" block type="submit">
+                  Log in
+                </Button>
+              </form>
 
-          <ChartCard title="Users">
-            <Line data={usersData.data} options={usersData.options} />
-          </ChartCard>
+              {/* <p className="mt-4">
+                <Link href="/example/forgot-password">
+                  <a className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline">
+                    Forgot your password?
+                  </a>
+                </Link>
+              </p> */}
+            </div>
+          </main>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
 
-export default Dashboard;
+export default LoginPage;
