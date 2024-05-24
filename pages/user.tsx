@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import PageTitle from "example/components/Typography/PageTitle";
+import React, { useState, useEffect, useRef } from "react";
+import PageTitle from "pages/components/Typography/PageTitle";
 import {
   Table,
   TableHeader,
@@ -19,216 +19,238 @@ import {
   ModalFooter,
 } from "@roketid/windmill-react-ui";
 import { EditIcon, TrashIcon } from "icons";
-import Layout from "example/containers/Layout";
+import Layout from "pages/containers/Layout";
+import {
+  getAllUsers,
+  updateUser,
+  deleteUser,
+  getAllDepartments,
+} from "pages/api/api";
+import axios from "axios";
+import ReactSelect from "react-select";
 
 interface UserModel {
-  Id: string;
-  UserName: string;
-  Email: string;
-  Role: string;
-  DepartmentIds: number[];
+  id: string;
+  userName: string;
+  email: string;
+  role: string;
+  departmentIds: number[];
 }
 
 interface Department {
-  DepartmentId: number;
-  Name: string;
+  departmentId: number;
+  name: string;
 }
-
-const users: UserModel[] = [
-  {
-    Id: "1",
-    UserName: "John Doe",
-    Email: "john.doe@example.com",
-    Role: "Director",
-    DepartmentIds: [1, 2],
-  },
-  {
-    Id: "2",
-    UserName: "Jane Smith",
-    Email: "jane.smith@example.com",
-    Role: "StudentAffairsService",
-    DepartmentIds: [2],
-  },
-  {
-    Id: "3",
-    UserName: "Alice Johnson",
-    Email: "alice.johnson@example.com",
-    Role: "Director",
-    DepartmentIds: [1, 3],
-  },
-  {
-    Id: "4",
-    UserName: "Bob Smith",
-    Email: "bob.smith@example.com",
-    Role: "StudentAffairsService",
-    DepartmentIds: [2],
-  },
-  {
-    Id: "5",
-    UserName: "Charlie Brown",
-    Email: "charlie.brown@example.com",
-    Role: "Director",
-    DepartmentIds: [1, 2, 3],
-  },
-  {
-    Id: "6",
-    UserName: "David Lee",
-    Email: "david.lee@example.com",
-    Role: "StudentAffairsService",
-    DepartmentIds: [3],
-  },
-  {
-    Id: "7",
-    UserName: "Eva Martinez",
-    Email: "eva.martinez@example.com",
-    Role: "Director",
-    DepartmentIds: [2, 3],
-  },
-  {
-    Id: "8",
-    UserName: "Frank Johnson",
-    Email: "frank.johnson@example.com",
-    Role: "StudentAffairsService",
-    DepartmentIds: [1],
-  },
-  {
-    Id: "9",
-    UserName: "Grace Wilson",
-    Email: "grace.wilson@example.com",
-    Role: "Director",
-    DepartmentIds: [1, 2],
-  },
-  {
-    Id: "10",
-    UserName: "Henry Davis",
-    Email: "henry.davis@example.com",
-    Role: "StudentAffairsService",
-    DepartmentIds: [2, 3],
-  },
-  // Add more users as needed
-];
-
-const departments: Department[] = [
-  {
-    DepartmentId: 1,
-    Name: "Digital",
-  },
-  {
-    DepartmentId: 2,
-    Name: "Business",
-  },
-  {
-    DepartmentId: 3,
-    Name: "Polytechnic",
-  },
-  // Add more departments as needed
-];
 
 interface EditUserFormProps {
   user: UserModel | null;
 }
 
-const departmentss = Array.from(
-  new Set(departments.map((department) => department.Name))
-);
-const roles = Array.from(new Set(users.map((user) => user.Role)));
-
-function AddUserForm() {
-  return (
-    <>
-      <Label>
-        <span>Email</span>
-        <Input className="mt-1" type="email" placeholder="Enter Email" />
-      </Label>
-      <Label className="mt-4">
-        <span>Password</span>
-        <Input className="mt-1" type="password" placeholder="Enter Password" />
-      </Label>
-      <Label className="mt-4">
-        <span>UserName</span>
-        <Input className="mt-1" placeholder="Enter UserName" />
-      </Label>
-      <Label className="mt-4">
-        <span>Role</span>
-        <Select className="mt-1">
-          <option value="">Select Role</option>
-          {roles.map((role, index) => (
-            <option key={index} value={role}>
-              {role}
-            </option>
-          ))}
-        </Select>
-      </Label>
-      <Label className="mt-4">
-        <span>Department</span>
-        <Select className="mt-1">
-          <option value="">Select Department</option>
-          {departmentss.map((department, index) => (
-            <option key={index} value={department}>
-              {department}
-            </option>
-          ))}
-        </Select>
-      </Label>
-    </>
-  );
-}
-function EditUserForm({ user }: EditUserFormProps) {
-  const [email, setEmail] = useState(user?.Email || "");
-  const [userName, setUserName] = useState(user?.UserName || "");
-  const [role, setRole] = useState(user?.Role || "");
-  const [departmentIds, setDepartmentIds] = useState(user?.DepartmentIds || []);
-  return (
-    <>
-      <Label>
-        <span>Email</span>
-        <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </Label>
-      <Label>
-        <span>Username</span>
-        <Input
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          required
-        />
-      </Label>
-      <Label>
-        <span>Role</span>
-        <Select value={role} onChange={(e) => setRole(e.target.value)} required>
-          <option value="">Select Role</option>
-          <option value="Admin">Admin</option>
-          <option value="User">User</option>
-        </Select>
-      </Label>
-      <Label>
-        <span>Departments</span>
-        <Select
-          multiple
-          value={departmentIds.map(String)}
-          onChange={(e) =>
-            setDepartmentIds(
-              Array.from(e.target.selectedOptions, (option) =>
-                Number(option.value)
-              )
-            )
-          }
-          required
-        >
-          <option value="1">Engineering</option>
-          <option value="2">Marketing</option>
-        </Select>
-      </Label>
-    </>
-  );
-}
-
 function Users() {
+  const [users, setUsers] = useState<UserModel[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+
+  useEffect(() => {
+    getAllUsers().then((response) => setUsers(response.data.data));
+    getAllDepartments().then((response) => setDepartments(response.data));
+  }, []);
+
+  const handleUpdateUser = (id: string, user: UserModel) => {
+    updateUser(id, user).then(() =>
+      getAllUsers().then((response) => setUsers(response.data))
+    );
+  };
+
+  const handleDeleteUser = (id: string) => {
+    deleteUser(id).then(() =>
+      getAllUsers().then((response) => setUsers(response.data.data))
+    );
+    closeDeleteUserModal();
+  };
+
+  const roles = Array.from(new Set(users.map((user) => user.role)));
+  const departmentss = Array.from(
+    new Set(departments.map((department) => department.name))
+  );
+
+  function AddUserForm() {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+      const email = (e.target as any).email.value;
+      const userName = (e.target as any).userName.value;
+      const password = (e.target as any).password.value;
+      const role = (e.target as any).role.value;
+      const departmentIds = Array.from(
+        (e.target as any).departmentIds.selectedOptions,
+        (option: HTMLOptionElement) => Number(option.value)
+      );
+      try {
+        const response = await axios.post(
+          "https://localhost:7099/api/user/create-user",
+          {
+            email: email,
+            userName: userName,
+            password: password,
+            role: role,
+            departmentIds: departmentIds,
+          }
+        );
+        getAllUsers().then((response) => setUsers(response.data.data));
+        closeAddUserModal();
+      } catch (error) {
+        console.log("An error occurred. Please try again later.");
+      }
+    }
+    return (
+      <form onSubmit={handleSubmit}>
+        <Label>
+          <span>Email</span>
+          <Input
+            className="mt-1"
+            type="email"
+            placeholder="Enter Email"
+            name="email"
+          />
+        </Label>
+        <Label className="mt-4">
+          <span>Password</span>
+          <Input
+            className="mt-1"
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+          />
+        </Label>
+        <Label className="mt-4">
+          <span>UserName</span>
+          <Input
+            className="mt-1"
+            placeholder="Enter UserName"
+            name="userName"
+          />
+        </Label>
+        <Label className="mt-4">
+          <span>Role</span>
+          <Select className="mt-1" name="role">
+            <option value="">Select Role</option>
+            {roles.map((role, index) => (
+              <option key={index} value={role}>
+                {role}
+              </option>
+            ))}
+          </Select>
+        </Label>
+        <Label className="mt-4">
+          <span>Department</span>
+          <Select className="mt-1" name="departmentIds">
+            <option value="">Select Department</option>
+            {departments.map((department, index) => (
+              <option key={index} value={department.departmentId}>
+                {department.name}
+              </option>
+            ))}
+          </Select>
+        </Label>
+        <Button className="mt-4" block type="submit">
+          Add
+        </Button>
+      </form>
+    );
+  }
+
+  function EditUserForm({ user }: EditUserFormProps) {
+    const [email, setEmail] = useState(user?.email || "");
+    const [userName, setUserName] = useState(user?.userName || "");
+    const [role, setRole] = useState(user?.role || "");
+    const [departmentIds, setDepartmentIds] = useState(
+      user?.departmentIds || []
+    );
+    const departmentOptions = departments.map((department) => ({
+      value: department.departmentId,
+      label: department.name,
+    }));
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+      const email = (e.target as any).email.value;
+      const userName = (e.target as any).userName.value;
+      const role = (e.target as any).role.value;
+      try {
+        const response = await axios.put(
+          `https://localhost:7099/api/user/update-user/${user?.id}`,
+          {
+            email: email,
+            userName: userName,
+            role: role,
+            departmentIds: departmentIds,
+          }
+        );
+        getAllUsers().then((response) => setUsers(response.data.data));
+        closeEditUserModal();
+      } catch (error) {
+        console.log("An error occurred. Please try again later.");
+      }
+    }
+    return (
+      <form onSubmit={handleSubmit}>
+        <Label>
+          <span>Email</span>
+          <Input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </Label>
+        <Label>
+          <span>Username</span>
+          <Input
+            type="text"
+            name="userName"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            required
+          />
+        </Label>
+        <Label>
+          <span>Role</span>
+          <Select
+            value={role}
+            name="role"
+            onChange={(e) => setRole(e.target.value)}
+            required
+          >
+            {roles.map((roleItem, i) => (
+              <option key={i} value={roleItem}>
+                {roleItem}
+              </option>
+            ))}
+          </Select>
+        </Label>
+        <Label>
+          <span>Departments</span>
+          <ReactSelect
+            name="departmentIds"
+            isMulti
+            options={departmentOptions}
+            value={departmentIds.map((id) =>
+              departmentOptions.find((option) => option && option.value === id)
+            )}
+            onChange={(selectedOptions) => {
+              const selectedDepartmentIds = selectedOptions
+                .map((option) => option && option.value)
+                .filter((id) => id !== undefined) as number[];
+              setDepartmentIds(selectedDepartmentIds);
+            }}
+          />
+        </Label>
+        <Button className="mt-4" block type="submit">
+          Save
+        </Button>
+      </form>
+    );
+  }
+
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
 
   function openAddUserModal() {
@@ -261,10 +283,6 @@ function Users() {
     setIsDeleteUserModalOpen(false);
   };
 
-  const deleteUser = () => {
-    // TODO: Implement delete logic here
-    closeDeleteUserModal();
-  };
   const [page, setPage] = useState(1);
   const [data, setData] = useState<UserModel[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -284,29 +302,29 @@ function Users() {
     setPage(1);
   };
 
-  useEffect(() => {
-    let filteredUsers = users.filter(
-      (user) =>
-        user.UserName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.Email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    if (departmentFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.DepartmentIds.some(
-          (departmentId) =>
-            departments.find(
-              (department) => department.DepartmentId === departmentId
-            )?.Name === departmentFilter
-        )
-      );
-    }
-    if (roleFilter) {
-      filteredUsers = filteredUsers.filter((user) => user.Role === roleFilter);
-    }
-    setData(
-      filteredUsers.slice((page - 1) * resultsPerPage, page * resultsPerPage)
-    );
-  }, [page, searchTerm, departmentFilter, roleFilter]);
+  // useEffect(() => {
+  //   let filteredUsers = users.filter(
+  //     (user) =>
+  //       user.UserName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       user.Email.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+  //   if (departmentFilter) {
+  //     filteredUsers = filteredUsers.filter((user) =>
+  //       user.DepartmentIds.some(
+  //         (departmentId) =>
+  //           departments.find(
+  //             (department) => department.DepartmentId === departmentId
+  //           )?.Name === departmentFilter
+  //       )
+  //     );
+  //   }
+  //   if (roleFilter) {
+  //     filteredUsers = filteredUsers.filter((user) => user.Role === roleFilter);
+  //   }
+  //   setData(
+  //     filteredUsers.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+  //   );
+  // }, [page, searchTerm, departmentFilter, roleFilter]);
 
   return (
     <Layout>
@@ -323,7 +341,6 @@ function Users() {
               <Button layout="outline" onClick={closeAddUserModal}>
                 Cancel
               </Button>
-              <Button>Add</Button>
             </ModalFooter>
           </Modal>
           <Input
@@ -360,8 +377,8 @@ function Users() {
         >
           <option value="">All Departments</option>
           {departments.map((department, i) => (
-            <option key={i} value={department.Name}>
-              {department.Name}
+            <option key={i} value={department.name}>
+              {department.name}
             </option>
           ))}
         </Select>
@@ -370,7 +387,6 @@ function Users() {
         <Table>
           <TableHeader>
             <tr>
-              <TableCell>Id</TableCell>
               <TableCell>Username</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Role</TableCell>
@@ -379,26 +395,25 @@ function Users() {
             </tr>
           </TableHeader>
           <TableBody>
-            {data.map((user, i) => (
+            {users.map((user, i) => (
               <TableRow key={i}>
                 <TableCell>
-                  <span className="text-sm">{user.Id}</span>
+                  <span className="text-sm">{user.userName}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">{user.UserName}</span>
+                  <span className="text-sm">{user.email}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">{user.Email}</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">{user.Role}</span>
+                  <span className="text-sm">{user.role}</span>
                 </TableCell>
                 <TableCell>
                   <span className="text-sm">
-                    {user.DepartmentIds.map(
-                      (id) =>
-                        departments.find((d) => d.DepartmentId === id)?.Name
-                    ).join(", ")}
+                    {user.departmentIds
+                      .map(
+                        (id) =>
+                          departments.find((d) => d.departmentId === id)?.name
+                      )
+                      .join(", ")}
                   </span>
                 </TableCell>
                 <TableCell>
@@ -443,19 +458,20 @@ function Users() {
           <Button layout="outline" onClick={closeEditUserModal}>
             Cancel
           </Button>
-          <Button>Save</Button>
         </ModalFooter>
       </Modal>
       <Modal isOpen={isDeleteUserModalOpen} onClose={closeDeleteUserModal}>
         <ModalHeader>Delete User</ModalHeader>
         <ModalBody>
-          Are you sure you want to delete user {userToDelete?.UserName}?
+          Are you sure you want to delete user {userToDelete?.userName}?
         </ModalBody>
         <ModalFooter>
           <Button layout="outline" onClick={closeDeleteUserModal}>
             Cancel
           </Button>
-          <Button onClick={deleteUser}>Delete</Button>
+          <Button onClick={() => handleDeleteUser(userToDelete?.id || "")}>
+            Delete
+          </Button>
         </ModalFooter>
       </Modal>
     </Layout>

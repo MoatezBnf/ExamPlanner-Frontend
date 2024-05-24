@@ -48,7 +48,7 @@ function LoginPage() {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         // Handle successful login
         router.push("/dashboard");
-      } else if(response.status === 401) {
+      } else if (response.status === 401) {
         setErrorMessage(
           "Login failed. Please check your username and password."
         );
