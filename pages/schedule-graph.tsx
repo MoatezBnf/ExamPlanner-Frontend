@@ -10,8 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@roketid/windmill-react-ui";
-import Layout from "example/containers/Layout";
-import PageTitle from "example/components/Typography/PageTitle";
+import Layout from "pages/containers/Layout";
+import PageTitle from "pages/components/Typography/PageTitle";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { ThemeContext } from "context/ThemeContext";

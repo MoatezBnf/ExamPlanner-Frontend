@@ -18,8 +18,8 @@ import {
   Input,
 } from "@roketid/windmill-react-ui";
 import { EditIcon, TrashIcon, ViewIcon } from "icons";
-import Layout from "example/containers/Layout";
-import PageTitle from "example/components/Typography/PageTitle";
+import Layout from "pages/containers/Layout";
+import PageTitle from "pages/components/Typography/PageTitle";
 import Link from "next/link";
 
 interface Exam {

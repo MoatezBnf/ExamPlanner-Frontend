@@ -16,8 +16,8 @@ import {
   TableFooter,
   Pagination,
 } from "@roketid/windmill-react-ui";
-import PageTitle from "example/components/Typography/PageTitle";
-import Layout from "example/containers/Layout";
+import PageTitle from "pages/components/Typography/PageTitle";
+import Layout from "pages/containers/Layout";
 import { EditIcon, TrashIcon } from "icons";
 
 interface Exam {

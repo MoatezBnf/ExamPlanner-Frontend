@@ -88,7 +88,7 @@ function Dashboard() {
 
       {/* <!-- Cards --> */}
       <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-        <InfoCard title="Total clients" value="6389">
+        <InfoCard title="Total exams" value="6389">
           {/* @ts-ignore */}
           <RoundIcon
             icon={PeopleIcon}
@@ -98,7 +98,7 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="Account balance" value="$ 46,760.89">
+        <InfoCard title="Total departments" value="3">
           {/* @ts-ignore */}
           <RoundIcon
             icon={MoneyIcon}
@@ -108,7 +108,7 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="New sales" value="376">
+        <InfoCard title="Last exams session" value="15/05/2024-22/05/2024">
           {/* @ts-ignore */}
           <RoundIcon
             icon={CartIcon}
@@ -118,7 +118,7 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="Pending contacts" value="35">
+        <InfoCard title="Total rooms" value="35">
           {/* @ts-ignore */}
           <RoundIcon
             icon={ChatIcon}
@@ -129,7 +129,7 @@ function Dashboard() {
         </InfoCard>
       </div>
 
-      <TableContainer>
+      {/* <TableContainer>
         <Table>
           <TableHeader>
             <tr>
@@ -180,9 +180,9 @@ function Dashboard() {
             onChange={onPageChange}
           />
         </TableFooter>
-      </TableContainer>
+      </TableContainer> */}
 
-      <PageTitle>Charts</PageTitle>
+      {/* <PageTitle>Charts</PageTitle> */}
       <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-2">
         <ChartCard title="Classes">
           <Doughnut data={examsData.data} options={examsData.options} />
